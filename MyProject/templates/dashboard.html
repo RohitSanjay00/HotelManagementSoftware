@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Aloha Hotels - Dashboard</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand mr-auto" href="#">Aloha Hotels</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('checkin') }}">New Guest Form</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('events') }}">Events Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('roominfo') }}">Room Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('guestlist') }}">Guest List</a> <!-- Added Guest List URL -->
+        </li>
+      </ul>
+    </div>
+</nav>
+  
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Calendar Widget -->
+      <div class="widget">
+        <h3>Calendar</h3>
+        <input type="text" id="calendar" readonly="readonly">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <!-- Events Widget -->
+      <div class="widget">
+        <h3>
+          <a href="{{ url_for('event_info') }}" class="text-decoration-none text-dark">
+            Events
+          </a>
+        </h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Event Name</th>
+              <th>Event Host</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for event in events %}
+            <tr>
+              <td>{{ event.EventName }}</td>
+              <td>{{ event.HostName }}</td>
+              <td>{{ event.StartDate }}</td>
+              <td>{{ event.EndDate }}</td>
+            </tr>
+            {% endfor %}
+            {% if events|length == 0 %}
+            <tr>
+              <td colspan="2">No events planned</td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Check-In Widget -->
+      <div class="widget">
+        <h3>
+          <a href="{{ url_for('guestlist') }}" class="text-decoration-none text-dark">
+            Upcoming Guests
+          </a>
+        </h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>BookingID</th>
+              <th>FirstName</th>
+              <th>LastName</th>
+              <th>RoomNumber</th>
+              <th>FromDate</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for books in bookings %}
+            <tr>
+              <td>{{ books.BookingID }}</td>
+              <td>{{ books.FirstName }}</td>
+              <td>{{ books.LastName }}</td>
+              <td>{{ books.RoomNumber }}</td>
+              <td>{{ books.FromDate }}</td>
+            </tr>
+            {% endfor %}
+            {% if bookings|length == 0 %}
+            <tr>
+              <td colspan="2">No bookings Today</td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <!-- Additional Widget (optional) -->
+      <div class="widget">
+        <h3>Rooms Available</h3>
+        <table class="table">
+            <thead>
+              <tr>
+                <th>RoomType</th>
+                <th>Number Of Available Rooms</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for room in available_rooms %}
+                <tr>
+                  <td>{{ room.RoomType }}</td>
+                  <td>{{ room.NumberOfAvailableRooms }}</td>
+                </tr>
+              {% endfor %}
+              {% if available_rooms|length == 0 %}
+                <tr>
+                  <td colspan="2">No available rooms Today</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    flatpickr("#calendar", {
+      inline: true,
+      defaultDate: new Date(),
+      onChange: function(selectedDates, dateStr, instance) {
+        // You can add logic here for date selection if needed
+      }
+    });
+  });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

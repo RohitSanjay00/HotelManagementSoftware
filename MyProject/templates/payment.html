@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Aloha Hotels - Payment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='RoomInfo.css') }}">
+    <style>
+        /* Additional custom styles can be added here */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .payment-form {
+            max-width: 500px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .btn-pay {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand mr-auto" href="#">Aloha Hotels</a>
+    </nav>
+
+    <div class="container">
+        <div class="payment-form">
+            <h2 class="mb-4">Payment Details</h2>
+
+            <!-- Display room information -->
+            <div class="form-group">
+                <label for="roomNumber">Room Number:</label>
+                <input type="text" id="roomNumber" name="roomNumber" value="{{ room_number }}" readonly>
+            </div>
+
+            <!-- Fetch price per night from HotelRooms table in app.py -->
+            <div class="form-group">
+                <label for="pricePerNight">Price Per Night:</label>
+                <input type="text" id="pricePerNight" name="pricePerNight" value="{{ price_per_night }}" readonly>
+            </div>
+
+            <!-- Get the number of days from BookingDetails table in app.py -->
+            <div class="form-group">
+                <label for="numberOfDays">Number of Days:</label>
+                <input type="text" id="numberOfDays" name="numberOfDays" value="{{ number_of_days }}" readonly>
+            </div>
+
+            <!-- Calculate total cost -->
+            <div class="form-group">
+                <label for="totalCost">Total Cost:</label>
+                <input type="text" id="totalCost" name="totalCost" value="{{ total_cost }}" readonly>
+            </div>
+
+            <!-- Add JavaScript to handle navigation -->
+            <button class="btn-pay" onclick="proceedToPayment()">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <script>
+        function proceedToPayment() {
+            window.location.href = 'paymentGateway';  // Corrected to match the route in app.py
+        }
+    </script>
+</body>
+
+</html>

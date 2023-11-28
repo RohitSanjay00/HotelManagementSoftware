@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Aloha Hotels - Room Info</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='RoomInfo.css') }}">
+
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand mr-auto" href="#">Aloha Hotels</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('checkin') }}">Check-In</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('events') }}">Events Info</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('roominfo') }}">Room Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('guestlist') }}">Guest List</a> <!-- Added Guest List URL -->
+        </li>
+      </ul>
+    </div>
+</nav>
+
+
+<div class="container">
+  <div class="row mx-auto">
+    <div class="col-md-3 room-section">
+      <div class="room-box">
+        <img src="{{ url_for('static', filename='images/room_image3.jpg') }}" alt="Room 1">
+        <p>Regular</p>
+        <div class="room-info">
+          <p>
+            Indulge in the epitome of comfort and sophistication with our exquisite 'Regular' room, offering a spacious haven spanning 250 square feet.
+            Unwind in the embrace of tranquility with a plush 'Single Bed' designed for your ultimate relaxation.
+            Whether you're here for business or leisure, our 'City View' rooms provide a captivating panorama that complements your stay.
+          </p>
+          <p>Key Features:</p>
+          <ul>
+            <li>Room Type: 'Regular'</li>
+            <li>Room Size: 250 sq ft</li>
+            <li>Number of Beds: 1</li>
+            <li>Type of Bed: Single Bed</li>
+            <li>View: City View</li>
+            <li>Number of Rooms: 1</li>
+          </ul>
+          <p>In-room Amenities:</p>
+          <ul>
+            <li>Wifi Included: Yes</li>
+            <li>Breakfast Included: Yes</li>
+            <li>Mini Fridge: Yes</li>
+          </ul>
+          <p>Price: $150.00/day</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 room-section">
+        <div class="room-box">
+          <img src="{{ url_for('static', filename='images/room_image4.jpg') }}" alt="Room 2">
+          <p>Premium</p>
+          <div class="room-info">
+            <p>
+                Embark on a journey of opulence and serenity in our distinguished 'Premium' room, a sanctuary of comfort and elegance spanning a generous 300 square feet. 
+                Revel in the embrace of luxury with not one but two comfortable 'Single Beds,' ensuring your stay is nothing short of extraordinary. 
+                The 'Ocean View' from your window is a masterpiece, offering a breathtaking panorama that will enchant your senses.
+            </p>
+            <p>Key Features:</p>
+            <ul>
+              <li>Room Type: 'Premium'</li>
+              <li>Room Size: 300 sq ft</li>
+              <li>Number of Beds: 1</li>
+              <li>Type of Bed: 2 Single Bed</li>
+              <li>View: Ocean View</li>
+              <li>Number of Rooms: 1</li>
+            </ul>
+            <p>In-room Amenities:</p>
+            <ul>
+              <li>Wifi Included: Yes</li>
+              <li>Breakfast Included: Yes</li>
+              <li>Mini Fridge: Yes</li>
+            </ul>
+            <p>Price: $200.00/day</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 room-section">
+        <div class="room-box">
+          <img src="{{ url_for('static', filename='images/room_image2.jpg') }}" alt="Room 3">
+          <p>Suit</p>
+          <div class="room-info">
+            <p>
+                Embark on a regal retreat in our exclusive 'Suite,' a palatial haven spanning an expansive 550 square feet. 
+                Indulge in the lap of luxury with a lavish 'Queen Bed,' promising nights of unparalleled comfort. 
+                Gaze upon the majesty of the 'Mountain View' from your window, a breathtaking spectacle that will leave you in awe.
+            </p>
+            <p>Key Features:</p>
+            <ul>
+              <li>Room Type: 'Suite'</li>
+              <li>Room Size: 550 sq ft</li>
+              <li>Number of Beds: 1</li>
+              <li>Type of Bed: 1 Queen Bed</li>
+              <li>View: Mountain View</li>
+              <li>Number of Rooms: 1</li>
+            </ul>
+            <p>In-room Amenities:</p>
+            <ul>
+              <li>Wifi Included: Yes</li>
+              <li>Breakfast Included: Yes</li>
+              <li>Mini Fridge: Yes</li>
+            </ul>
+            <p>Price: $250.00/day</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 room-section">
+        <div class="room-box">
+          <img src="{{ url_for('static', filename='images/room_image1.jpg') }}" alt="Room 4">
+          <p>Premium Suite</p>
+          <div class="room-info">
+            <p>
+                Step into the epitome of luxury with our exclusive 'Premium Suite,' a lavish retreat spanning an expansive 650 square feet. 
+                Immerse yourself in the lap of indulgence with not one but two regal 'Queen Beds,' ensuring nights of unparalleled comfort and opulence. 
+                Admire the dynamic cityscape through the windows, as our 'City View' unfolds before you in all its splendor.
+            </p>
+            <p>Key Features:</p>
+            <ul>
+              <li>Room Type: 'Premium Suite'</li>
+              <li>Room Size: 650 sq ft</li>
+              <li>Number of Beds: 2</li>
+              <li>Type of Bed: Queen Beds</li>
+              <li>View: City View</li>
+              <li>Number of Rooms: 2</li>
+            </ul>
+            <p>In-room Amenities:</p>
+            <ul>
+              <li>Wifi Included: Yes</li>
+              <li>Breakfast Included: Yes</li>
+              <li>Mini Fridge: Yes</li>
+            </ul>
+            <p>Price: $400.00/day</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 room-section">
+        <div class="room-box">
+          <img src="{{ url_for('static', filename='images/room_image5.jpg') }}" alt="Room 5">
+          <p>VIP Suite</p>
+          <div class="room-info">
+            <p>
+                Indulge in the pinnacle of luxury with our distinguished 'VIP Suite,' an exclusive retreat spanning an intimate yet opulent 100 square feet. 
+                Immerse yourself in regality with four exquisite 'King Beds,' promising nights of unparalleled comfort and splendor. 
+                Gaze upon the world below with the breathtaking 'Panoramic View,' a visual feast that unfolds in every direction.
+            </p>
+            <p>Key Features:</p>
+            <ul>
+              <li>Room Type: 'VIP Suite'</li>
+              <li>Room Size: 1000 sq ft</li>
+              <li>Number of Beds: 4</li>
+              <li>Type of Bed: King Beds</li>
+              <li>View: Panoramic View</li>
+              <li>Number of Rooms: 1</li>
+            </ul>
+            <p>In-room Amenities:</p>
+            <ul>
+              <li>Wifi Included: Yes</li>
+              <li>Breakfast Included: Yes</li>
+              <li>Mini Fridge: Yes</li>
+            </ul>
+            <p>Price: $750.00/day</p>
+          </div>
+        </div>
+      </div>
+    <!-- Repeat the structure for other rooms -->
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

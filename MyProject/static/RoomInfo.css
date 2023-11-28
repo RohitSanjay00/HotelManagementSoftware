@@ -1,0 +1,30 @@
+/* static/RoomInfo.css */
+
+.room-section {
+    padding: 10px;
+  }
+  
+  .room-box {
+    border: 2px solid black;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  .room-box img {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+  }
+  
+  .room-box p {
+    text-align: center;
+    margin: 10px 0;
+  }
+    .room-info {
+      display: none;
+    }
+
+    .room-box:hover .room-info {
+      display: block;
+    }
+  

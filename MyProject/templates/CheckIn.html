@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Aloha Hotels - Room Info</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <!-- Add any additional stylesheets or scripts here -->
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand mr-auto" href="#">Aloha Hotels</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('checkin') }}">New Guest Form</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('events') }}">Events Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('roominfo') }}">Room Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('guestlist') }}">Guest List</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h2>Booking Details Form</h2>
+    <form action="{{ url_for('submit_reservation') }}" method="post">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="firstName">First Name</label>
+          <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" required disabled>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="lastName">Last Name</label>
+          <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required disabled>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="email">Email Address</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required disabled>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="mobileNumber">Mobile Number</label>
+          <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" placeholder="Mobile Number" required disabled>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="roomNumber">Room Number</label>
+          <select class="form-control" id="roomNumber" name="roomNumber" required disabled>
+            <option value="" disabled selected>Select Room Type First</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="roomType">Room Type</label>
+          <select class="form-control" id="roomType" name="roomType" required>
+            <option value="" disabled selected>Select Room Type</option>
+            <option value="Regular">Regular</option>
+            <option value="Premium">Premium</option>
+            <option value="Suit">Suit</option>
+            <option value="Premium Suit">Premium Suit</option>
+            <option value="VIP Suit">VIP Suit</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="numberOfGuests">Number of Guests</label>
+          <input type="number" class="form-control" id="numberOfGuests" name="numberOfGuests" placeholder="Number of Guests" required disabled>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="fromDate">From Date</label>
+          <input type="text" class="form-control" id="fromDate" name="fromDate" placeholder="From Date" data-input data-date-format="Y-m-d" required disabled>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="toDate">To Date</label>
+          <input type="text" class="form-control" id="toDate" name="toDate" placeholder="To Date" data-input data-date-format="Y-m-d" required disabled>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="comments">Comments</label>
+          <textarea class="form-control" id="comments" name="comments" rows="3" placeholder="Comments" disabled></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Submit</button>
+    </form>
+  </div>
+
+  <!-- Add any additional scripts here, after including Bootstrap and Flatpickr -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- Add your custom scripts here -->
+  <script>
+    flatpickr('#fromDate', { dateFormat: 'Y-m-d', minDate: 'today' });
+    flatpickr('#toDate', { dateFormat: 'Y-m-d', minDate: 'today' });
+
+    document.getElementById('fromDate').addEventListener('change', function () {
+      // Ensure that To Date is greater than From Date
+      flatpickr('#toDate', { minDate: this.value, dateFormat: 'Y-m-d' });
+    });
+
+    document.getElementById('toDate').addEventListener('change', function () {
+      // Ensure that From Date is less than To Date
+      flatpickr('#fromDate', { maxDate: this.value, dateFormat: 'Y-m-d' });
+    });
+
+    // Enable fields and populate room numbers on selecting a room type
+    document.getElementById('roomType').addEventListener('change', function() {
+      var selectedRoomType = this.value;
+      var roomNumberSelect = document.getElementById('roomNumber');
+
+      // Fetch available rooms for the selected room type using Flask
+      fetch(`/get_available_rooms?roomType=${selectedRoomType}`)
+        .then(response => response.json())
+        .then(data => {
+          // Clear existing options
+          roomNumberSelect.innerHTML = '<option value="" disabled selected>Select Room Number</option>';
+
+          // Populate with fetched room numbers
+          data.forEach(room => {
+            var option = document.createElement('option');
+            option.value = room.RoomNumber;
+            option.text = room.RoomNumber;
+            roomNumberSelect.appendChild(option);
+          });
+
+          // Enable room number dropdown
+          roomNumberSelect.disabled = false;
+
+          // Enable other form fields
+          var formElements = document.getElementsByTagName('input');
+          for (var i = 0; i < formElements.length; i++) {
+            formElements[i].disabled = false;
+          }
+          document.getElementById('comments').disabled = false;
+          document.getElementById('submitBtn').disabled = false;
+        })
+        .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .payment-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input,
+        select,
+        button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="payment-container">
+        <h2>Payment Details</h2>
+        <form class="payment-form">
+            <label for="cardNumber">Card Number</label>
+            <input type="text" id="cardNumber" placeholder="Enter card number" />
+
+            <label for="expiryDate">Expiry Date</label>
+            <input type="text" id="expiryDate" placeholder="MM/YYYY" />
+
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" placeholder="Enter CVV" />
+
+            <label for="cardHolder">Cardholder Name</label>
+            <input type="text" id="cardHolder" placeholder="Enter cardholder name" />
+
+            <label for="cardType">Card Type</label>
+            <select id="cardType">
+                <option value="visa">Visa</option>
+                <option value="mastercard">MasterCard</option>
+                <option value="amex">American Express</option>
+            </select>
+
+            <button type="button"a onclick="processPayment()">Pay Now</button>
+        </form>
+    </div>
+
+    <script>
+        function processPayment() {
+            alert("Payment processed successfully!");
+            // You can add backend integration here for actual payment processing
+
+            // Redirect to the dashboard.html page
+            window.location.href = '/dashboard'; // Adjust the URL as needed
+        }
+    </script>
+
+</body>
+
+</html>

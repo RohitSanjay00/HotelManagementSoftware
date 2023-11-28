@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Aloha Hotels - Guest List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='RoomInfo.css') }}">
+    <style>
+        /* Additional custom styles can be added here */
+        table {
+            width: 100%; /* Adjust the width as needed */
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .checkInOutBtn {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .checkInOutBtn button {
+            width: 150px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .checkInOutBtn button:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand mr-auto" href="#">Aloha Hotels</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('checkin') }}">New Guest Form</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('events') }}">Events Info</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('roominfo') }}">Room Info</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('guestlist') }}">Guest List</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Add your content here (e.g., display booking details) -->
+    <div class="container">
+        <h2>Guest List</h2>
+        <table id="guestTable">
+            <!-- Add table headers here -->
+            <thead>
+                <tr>
+                    <td></td>
+                    <th>BookingID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email Address</th>
+                    <th>Mobile Number</th>
+                    <th>Room Number</th>
+                    <th>From Date</th>
+                    <th>To Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loop through booking details and display them in rows -->
+                {% for booking in today_bookings %}
+                    <tr>
+                        <td><input type="radio" name="guestRow"></td>
+                        <td>{{ booking['BookingID'] }}</td>
+                        <td>{{ booking['FirstName'] }}</td>
+                        <td>{{ booking['LastName'] }}</td>
+                        <td>{{ booking['EmailAddress'] }}</td>
+                        <td>{{ booking['MobileNumber'] }}</td>
+                        <td>{{ booking['RoomNumber'] }}</td>
+                        <td>{{ booking['FromDate'] }}</td>
+                        <td>{{ booking['ToDate'] }}</td>
+                        <!-- Add more columns based on your database columns -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Buttons for Check In and Check Out -->
+        <div class="checkInOutBtn">
+            <button onclick="checkInOut('checkin')">Check In</button>
+            <button onclick="checkInOut('checkout')">Check Out</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle Check In/Check Out button click
+        function checkInOut(action) {
+            var selectedRow = document.querySelector('input[name="guestRow"]:checked');
+            if (selectedRow) {
+                var roomNumber = selectedRow.closest('tr').querySelector('td:nth-child(7)').innerText; // Assuming Room Number is in the 6th column
+                var confirmed = confirm("Are you sure you want to " + action + " for Room " + roomNumber + "?");
+                
+                if (confirmed) {
+                    // Directly define the endpoint here
+                    var endpoint = '/checkinout';
+                    
+                    // Send the roomNumber and action to the server using AJAX
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', endpoint, true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.send(JSON.stringify({ roomNumber: roomNumber, action: action }));
+                    
+                    // Handle the response from the server if needed
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            // Handle success
+                            if (action === 'checkout') {
+                                // Redirect to the payment page with room number as a query parameter
+                                window.location.href = '/payment?room_number=' + roomNumber;
+                            } else {
+                                alert(xhr.responseText);
+                                // Refresh the page after successful check-in
+                                location.reload();
+                            }
+                        } else {
+                            // Handle error
+                            alert('Error: ' + xhr.statusText);
+                        }
+                    };
+                }
+            } else {
+                alert("Please select a row before clicking Check In/Check Out.");
+            }
+        }
+    </script>
+</body>
+
+</html>

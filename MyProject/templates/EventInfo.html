@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Aloha Hotels - Event Info</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- Add any additional stylesheets or scripts here -->
+  <!-- Include the full version of jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand mr-auto" href="#">Aloha Hotels</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('checkin') }}">New Guest Form</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('events') }}">Events Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('roominfo') }}">Room Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('guestlist') }}">Guest List</a> <!-- Added Guest List URL -->
+        </li>
+      </ul>
+    </div>
+</nav>
+
+
+<div class="container">
+  <!-- Add your content for Events Info here -->
+  <h2>Events Information</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Event Name</th>
+        <th>Host Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Total Days</th>
+        <th>Action</th> <!-- Added this column for the delete button -->
+      </tr>
+    </thead>
+    <tbody id="eventsTableBody">
+      <!-- Events will be dynamically added here -->
+    </tbody>
+  </table>
+
+  <!-- Create New Event Button and Modal Form -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createEventModal">
+    Create New Event
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="createEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createEventModalLabel">Create New Event</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Add your form fields for creating a new event -->
+          <form id="createEventForm">
+            <div class="form-group">
+              <label for="eventName">Event Name</label>
+              <input type="text" class="form-control" id="eventName" name="eventName" required>
+            </div>
+            <div class="form-group">
+              <label for="hostName">Host Name</label>
+              <input type="text" class="form-control" id="hostName" name="hostName" required>
+            </div>
+            <div class="form-group">
+              <label for="startDate">Start Date</label>
+              <input type="date" class="form-control" id="startDate" name="startDate" required>
+            </div>
+            <div class="form-group">
+              <label for="endDate">End Date</label>
+              <input type="date" class="form-control" id="endDate" name="endDate" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Include Bootstrap scripts -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+  // Add JavaScript code to make a fetch request to handle form submission
+  document.addEventListener('DOMContentLoaded', function() {
+    fetchEvents();
+  });
+
+  function fetchEvents() {
+    fetch('/get_events')
+      .then(response => response.json())
+      .then(data => displayEvents(data))
+      .catch(error => console.error('Error fetching events:', error));
+  }
+
+  function displayEvents(events) {
+    var eventsTableBody = document.getElementById('eventsTableBody');
+    eventsTableBody.innerHTML = ''; // Clear existing content
+
+    events.forEach(function (event) {
+      var row = '<tr>' +
+        '<td>' + event.EventName + '</td>' +
+        '<td>' + event.HostName + '</td>' +
+        '<td>' + event.StartDate + '</td>' +
+        '<td>' + event.EndDate + '</td>' +
+        '<td>' + event.TotalDays + '</td>' +
+        '<td>' +
+          '<button class="btn btn-danger btn-sm" onclick="deleteEvent(\'' + event.EventName + '\', \'' + event.StartDate + '\')">Delete</button>' +
+        '</td>' +
+        '</tr>';
+      eventsTableBody.innerHTML += row;
+    });
+  }
+
+  // Add JavaScript code to handle the form submission for creating a new event
+  function submitForm() {
+    console.log('Form submitted'); // Add this line for logging
+
+    fetch('/create_event', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventName: document.getElementById('eventName').value,
+        hostName: document.getElementById('hostName').value,
+        startDate: document.getElementById('startDate').value,
+        endDate: document.getElementById('endDate').value,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data); // Add this line for logging
+        // Reload events after successful submission
+        fetchEvents();
+        // Clear form fields
+        document.getElementById('createEventForm').reset();
+        // Close the modal
+        $('#createEventModal').modal('hide');
+      })
+      .catch(error => console.error('Error creating event:', error));
+  }
+
+  // Add JavaScript code to handle the deletion of an event
+  function deleteEvent(eventName, startDate) {
+  // Format the date to match the expected format on the server
+  var formattedStartDate = new Date(startDate).toISOString().split('T')[0];
+
+  fetch('/delete_event', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      eventName: eventName,
+      startDate: formattedStartDate,
+    }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data); // Add this line for logging
+      // Reload events after successful deletion
+      fetchEvents();
+    })
+    .catch(error => console.error('Error deleting event:', error));
+}
+</script>
+</body>
+</html>
